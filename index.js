@@ -3,6 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const userHandler = require("./routeHandler/userHandler");
+const bookingHandler = require("./routeHandler/bookingHandler");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -16,7 +17,10 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cl
 }).then( ()=> console.log("Connection is Ok"))
 .catch((err)=> console.log(err));
 
+
+//handler 
 app.use('/users', userHandler);
+app.use('/booking', bookingHandler);
 
 app.get('/', (req, res) =>{
     res.send('Server is running');

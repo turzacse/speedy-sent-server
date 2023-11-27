@@ -22,6 +22,23 @@ router.get('/', async(req, res) => {
       }
 });
 
+router.get('/:email', async (req, res) => {
+  try {
+    const emailToFind = req.params.email; // Retrieve the email from the request parameters
+    const user = await User.findOne({ email: emailToFind }); // Find user by email using Mongoose findOne method
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // If user is found, send the user data in the response
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 router.get('/:id', async(req, res) => {
 
 });
