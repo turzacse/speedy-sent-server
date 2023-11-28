@@ -7,14 +7,12 @@ const User = new mongoose.model("User", userSchema);
 
 router.get('/', async(req, res) => {
     try {
-        const users = await User.find(); // Retrieve all users using Mongoose's find() method
+        const users = await User.find();
     
-        // If no users are found, return an empty array
         if (!users || users.length === 0) {
           return res.status(404).json({ message: 'No users found' });
         }
     
-        // If users are found, send the user data in the response
         res.status(200).json(users);
       } catch (error) {
         console.error(error);
@@ -24,14 +22,13 @@ router.get('/', async(req, res) => {
 
 router.get('/:email', async (req, res) => {
   try {
-    const emailToFind = req.params.email; // Retrieve the email from the request parameters
-    const user = await User.findOne({ email: emailToFind }); // Find user by email using Mongoose findOne method
+    const emailToFind = req.params.email; 
+    const user = await User.findOne({ email: emailToFind }); 
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // If user is found, send the user data in the response
     res.status(200).json(user);
   } catch (error) {
     console.error(error);
@@ -39,9 +36,6 @@ router.get('/:email', async (req, res) => {
   }
 });
 
-router.get('/:id', async(req, res) => {
-
-});
 
 router.post('/', async (req, res) => {
     try {
@@ -58,8 +52,35 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/:id', async(req, res)=>{
+router.put('/:id', async (req, res) => {
+  const userId = req.params.id;
+  const updateData = req.body;
+  try {
+      const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true });
+      if (!updatedUser) {
+          return res.status(404).json({ error: 'User not found' });
+      }
+      res.status(200).json(updatedUser);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
+router.put('/:id/make-admin', async (req, res) => {
+  try {
+      const userId = req.params.id;
+      const updatedUser = await User.findByIdAndUpdate(userId, { role: 'admin' }, { new: true });
+
+      if (!updatedUser) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      res.status(200).json({ message: 'User role updated to admin', user: updatedUser });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 router.delete('/:id', async(req, res) => {

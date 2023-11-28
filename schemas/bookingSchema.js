@@ -49,7 +49,7 @@ const bookingSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    bookinStatus: {
+    bookingStatus: {
         type: String,
         default: 'pending'
     },
@@ -59,11 +59,11 @@ const bookingSchema = new mongoose.Schema({
     },
     bookingDate: {
         type: Date,
-        default: Date.now // Auto-generated date when booking is created
+        default: Date.now 
     },
     deliveryMenId: {
-        type: mongoose.Schema.Types.ObjectId, // Assuming Delivery Men ID is stored as ObjectId
-        default: null // Initially set to null and updated when assigned
+        type: String, 
+        default: null 
     }
 });
 
