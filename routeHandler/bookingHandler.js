@@ -108,8 +108,21 @@ router.patch('/:id', async (req, res) => {
 });
 
 
-router.delete('/:id', async(req, res) => {
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
 
+    try {
+        const deletedBooking = await Booking.findByIdAndDelete(id);
+
+        if (!deletedBooking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+
+        res.status(200).json({ message: 'Booking deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 module.exports = router;
