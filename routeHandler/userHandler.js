@@ -38,18 +38,29 @@ router.get('/:email', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
+  const query = {email: req.body.user};
+  const existinguser = await User.findOne(query);
+  if(existinguser)
+  {
+    return res.status(500).json({
+      error: "User already Exists"
+    })
+  }
+  
     try {
-        const newUser = new User(req.body);
-        await newUser.save();
-        res.status(200).json({
-            message: "User was added successfully"
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "There was a server side error!"
-        });
-    }
+      const newUser = new User(req.body);
+      await newUser.save();
+      res.status(200).json({
+          message: "User was added successfully"
+      });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({
+          error: "There was a server side error!"
+      });
+  }
+  
+    
 });
 
 router.put('/:id', async (req, res) => {

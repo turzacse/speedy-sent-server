@@ -7,7 +7,7 @@ const userSchema = new mongooes.Schema({
       },
       phone: {
         type: String,
-        required: true
+        //required: true
       },
       photo: {
         type: String,
@@ -20,7 +20,7 @@ const userSchema = new mongooes.Schema({
       },
       password: {
         type: String,
-        required: true
+        //required: true
       },
       role: {
         type: String,
