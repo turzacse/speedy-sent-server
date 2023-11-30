@@ -2,10 +2,12 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const userSchema = require('../schemas/userSchema');
+const verifyToken = require('../middlewares/verifyToken');
 
 const User = new mongoose.model("User", userSchema);
 
-router.get('/', async(req, res) => {
+router.get('/', verifyToken, async(req, res) => {
+  // console.log(req.headers);
     try {
         const users = await User.find();
     
@@ -37,7 +39,7 @@ router.get('/:email', async (req, res) => {
 });
 
 
-router.post('/', async (req, res) => {
+router.post('/',  async (req, res) => {
   const query = {email: req.body.user};
   const existinguser = await User.findOne(query);
   if(existinguser)
