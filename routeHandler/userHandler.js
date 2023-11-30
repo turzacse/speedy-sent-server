@@ -39,6 +39,26 @@ router.get('/:email', async (req, res) => {
 });
 
 
+
+// image upload route 
+router.put('/:id/photo', async (req, res) => {
+  const userId = req.params.id;
+  const { photo } = req.body; 
+  try {
+    const updatedUser = await User.findByIdAndUpdate(userId, { photo }, { new: true });
+    
+    if (!updatedUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 router.post('/',  async (req, res) => {
   const query = {email: req.body.user};
   const existinguser = await User.findOne(query);

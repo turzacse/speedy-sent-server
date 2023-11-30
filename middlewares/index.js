@@ -8,7 +8,8 @@ const applyMiddleware = (app) => {
         origin: [
             LOCAL_CLIENT,
             CLIENT,
-            'http://localhost:5173'
+            'http://localhost:5173',
+            'https://speedy-send-12d87.web.app'
         ],
         credentials: true
     }));

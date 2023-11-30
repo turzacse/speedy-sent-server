@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const bookingSchema = require('../schemas/bookingSchema');
-
+const verifyToken = require("../middlewares/verifyToken")
 const Booking = new mongoose.model("Booking" , bookingSchema);
 
 // const User = new mongoose.model("User", userSchema);
 
-router.get('/', async(req, res) => {
+router.get('/', verifyToken, async(req, res) => {
     try {
         const bookings = await Booking.find({});
         res.status(200).json(bookings);
@@ -19,7 +19,7 @@ router.get('/', async(req, res) => {
     }
 });
 
-router.get('/:email', async (req, res) => {
+router.get('/:email', verifyToken, async (req, res) => {
     try {
         const { email } = req.params; 
         const bookingsByEmail = await Booking.find({ email }); 

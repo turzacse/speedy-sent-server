@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-
+const verifyToken = require('../middlewares/verifyToken')
 const reviewSchema = require('../schemas/reviewSchema');
 
 const Review = new mongoose.model("review", reviewSchema);
 
-router.get('/', async(req, res) => {
+router.get('/', verifyToken, async(req, res) => {
     try {
         const reviews = await Review.find();
     
