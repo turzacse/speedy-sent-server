@@ -9,7 +9,8 @@ const applyMiddleware = (app) => {
             LOCAL_CLIENT,
             CLIENT,
             'http://localhost:5173',
-            'https://speedy-send-12d87.web.app'
+            'https://speedy-send-12d87.web.app',
+            'https://speedy-981eb.web.app'
         ],
         credentials: true
     }));

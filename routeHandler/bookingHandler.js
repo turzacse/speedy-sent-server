@@ -7,7 +7,7 @@ const Booking = new mongoose.model("Booking" , bookingSchema);
 
 // const User = new mongoose.model("User", userSchema);
 
-router.get('/', verifyToken, async(req, res) => {
+router.get('/',  async(req, res) => {
     try {
         const bookings = await Booking.find({});
         res.status(200).json(bookings);

@@ -6,7 +6,7 @@ const reviewSchema = require('../schemas/reviewSchema');
 
 const Review = new mongoose.model("review", reviewSchema);
 
-router.get('/', verifyToken, async(req, res) => {
+router.get('/',  async(req, res) => {
     try {
         const reviews = await Review.find();
     

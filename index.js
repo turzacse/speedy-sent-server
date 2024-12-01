@@ -7,17 +7,11 @@ const userHandler = require("./routeHandler/userHandler");
 const bookingHandler = require("./routeHandler/bookingHandler");
 const reviewHandler = require("./routeHandler/reviewHandler");
 const applyMiddleware = require("./middlewares");
-
-// const authRoutes = require('./routeHandler/index');
+const stripe = require("stripe")('sk_test_51QQ99mJilWGi4ThmuTnsJVI0czqEMIxI2pnZcaTxR2Q8ItlXBr4t5BWVmDTjmlbgF9sebL0Chzj2xqKd3a7loxzs00twBqPFrA');
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-// app.use(cors({
-//     origin: [
-
-//     ]
-// }));
 applyMiddleware(app);
 
 app.use(express.json());
@@ -28,9 +22,6 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cl
 }).then( ()=> console.log("Connection is Ok"))
 .catch((err)=> console.log(err));
 
-
-//handler 
-// app.use(authRoutes);
 app.use('/users', userHandler);
 app.use('/booking', bookingHandler);
 app.use('/review', reviewHandler);
@@ -41,8 +32,22 @@ app.post('/jwt', async(req, res) => {
     res.send( {token} );
 })
 
-// middlewares
-// const verifyToken
+
+//*************** Paymet Mrthd ********//
+app.post('/create-intent', async (req, res) => {
+    const { price } = req.body; // Pass amount and currency from frontend
+    const amount = parseInt(price*100);
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount,
+      currency: 'usd',
+      payment_method_types: ['card']
+    });
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+    })
+    
+  });
 
 app.get('/', (req, res) =>{
     res.send('Server is running');

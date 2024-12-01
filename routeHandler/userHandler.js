@@ -6,7 +6,7 @@ const verifyToken = require('../middlewares/verifyToken');
 
 const User = new mongoose.model("User", userSchema);
 
-router.get('/', verifyToken, async(req, res) => {
+router.get('/', async(req, res) => {
   // console.log(req.headers);
     try {
         const users = await User.find();
@@ -22,7 +22,7 @@ router.get('/', verifyToken, async(req, res) => {
       }
 });
 
-router.get('/:email', async (req, res) => {
+router.get('/:email', verifyToken, async (req, res) => {
   try {
     const emailToFind = req.params.email; 
     const user = await User.findOne({ email: emailToFind }); 
